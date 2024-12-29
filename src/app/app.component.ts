@@ -16,7 +16,8 @@ export class AppComponent implements OnInit {
   loading = false;
   error: string | null = null;
   isEditing = false;
-  
+  isPopupOpen = false;
+
   newBook: Book = {
     id: 0,
     title: '',
@@ -52,6 +53,7 @@ export class AppComponent implements OnInit {
       }
       await this.loadBooks();
       this.resetForm();
+      this.closePopup();
       this.error = null;
     } catch (error) {
       this.error = this.isEditing ? 'Failed to update book' : 'Failed to add book';
@@ -61,6 +63,7 @@ export class AppComponent implements OnInit {
   startEdit(book: Book) {
     this.isEditing = true;
     this.newBook = { ...book };
+    this.openPopup();
   }
 
   async deleteBook(id: number) {
@@ -85,5 +88,24 @@ export class AppComponent implements OnInit {
       publicationDate: ''
     };
     this.error = null;
+  }
+
+  openPopup() {
+    this.isPopupOpen = true;
+  }
+
+  closePopup() {
+    this.isPopupOpen = false;
+    this.resetForm();
+  }
+
+  viewBookDetails(book: Book) {
+    alert(
+      `Book Details:\n
+        Title: ${book.title}\n
+        Author: ${book.author}\n
+        ISBN: ${book.isbn}\n
+        Publication Date: ${book.publicationDate}`
+    );
   }
 }
